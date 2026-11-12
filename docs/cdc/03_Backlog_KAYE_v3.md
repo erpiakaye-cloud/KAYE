@@ -2,7 +2,7 @@
 
 **Version 3.2 · 1er novembre 2026 · revue par le Conseil (CDC fonctionnel § 22)** · Référence : `01_CDC_Fonctionnel_KAYE_v3.md`, `02_CDC_Technique_KAYE_v3.md`
 
-Chaque ticket : identifiant, agent conseillé (**CC** = Claude Code, **CX** = Codex, **H** = humain), dépendances, exigences couvertes, critères d'acceptation. Branche : `t-<num>-<slug>` → PR vers `dev`. Les tickets **socle** se font dans l'ordre ; les autres peuvent avancer en parallèle dès que leurs dépendances sont fusionnées.
+Chaque ticket : identifiant, agent conseillé (**CC** = Claude Code, **CX** = Codex, **H** = humain), dépendances, exigences couvertes, critères d'acceptation. Branche : `claude/t-<num>-<slug>` ou `codex/t-<num>-<slug>` selon l'agent → PR vers `dev`. Les tickets **socle** se font dans l'ordre ; les autres peuvent avancer en parallèle dès que leurs dépendances sont fusionnées.
 
 Statuts possibles : `à faire` · `en cours` · `en revue` · `fait`.
 

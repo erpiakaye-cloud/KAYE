@@ -8,7 +8,7 @@ KAYE est un ERP IA conversationnel pour les boutiques ivoiriennes : le commerça
 ## Documents de référence (à lire avant tout ticket)
 - `docs/cdc/01_CDC_Fonctionnel_KAYE_v3.md` — ce que le produit doit faire (exigences `EF-Mx-nn`, règles `RG-n`).
 - `docs/cdc/02_CDC_Technique_KAYE_v3.md` — comment le construire (architecture, données, API, agent, FNE).
-- `docs/cdc/03_Backlog_KAYE_v3.md` — la liste des tickets. **Un ticket = une branche = une PR.**
+- `docs/cdc/03_Backlog_KAYE_v3.md` — la liste des tickets. **Un ticket = une branche = une PR vers `dev`** (voir « Règles Git et collaboration »).
 - `docs/adr/` — décisions d'architecture.
 
 ## Règles non négociables
@@ -66,5 +66,35 @@ Dix agents critiques (fonctionnel, architecte, dev full stack, staff engineer, U
 - Un constat **Bloquant** non levé interdit la fusion, sauf dérogation écrite d'un fondateur.
 - Avec Codex : suivre `docs/conseil/CODEX_CONSEIL.md`.
 
-## Branches
-`main` (production) ← `recette` ← `dev` ← `t-<num>-<slug>`. Les agents ouvrent des PR vers `dev` uniquement.
+## Règles Git et collaboration
+
+### Branches permanentes
+| Branche | Rôle | Qui fusionne |
+|---|---|---|
+| `main` | production | un fondateur, depuis `recette` |
+| `recette` | tests avec l'environnement DGI de test | un fondateur, depuis `dev` |
+| `dev` | intégration quotidienne | un fondateur, depuis une branche de tâche |
+
+Flux : `main` ← `recette` ← `dev` ← `claude/t-<num>-<slug>` ou `codex/t-<num>-<slug>`.
+Personne ne pousse directement sur ces trois branches : tout passe par une pull request.
+
+### Règles
+1. Une tâche du backlog (`docs/cdc/03_Backlog_KAYE_v3.md`) = une branche = une pull request vers `dev`.
+2. Toujours partir de `dev` à jour (`git fetch origin dev && git switch -c <branche> origin/dev`). Nom de branche : `claude/t-<num>-<slug>` pour Claude Code, `codex/t-<num>-<slug>` pour Codex (ex. `claude/t-004-stock-mouvements`).
+3. Jamais de branche permanente par agent. Une branche de tâche vit quelques heures ou quelques jours, puis est supprimée après la fusion.
+4. Jamais de push direct ni de force-push sur `main`, `recette` ou `dev`. Jamais de fusion de sa propre pull request : la fusion est faite par un fondateur.
+5. Deux agents ne travaillent jamais en même temps sur le même module. Répartition par défaut :
+   - **Claude Code** : socle, base de données, RLS, `packages/domain` (ventes, stock, trésorerie), moteur d'agent, connecteur FNE.
+   - **Codex** : écrans web, points d'API CRUD, gabarits de messages et PDF, imports, tests, corpus NLU.
+
+   Les tickets marqués *socle* sont traités l'un après l'autre.
+6. Petites pull requests : une seule tâche, lisible en dix minutes. Si une tâche grossit, la découper.
+7. Une pull request contient le code, les tests, la mise à jour de la documentation si un contrat change, et la liste des EF couvertes.
+8. Avant d'ouvrir la pull request : `pnpm lint && pnpm typecheck && pnpm test` verts (dès que le monorepo existe).
+9. Relecture croisée : chaque pull request est relue par l'autre agent (Codex relit Claude, Claude relit Codex), puis validée par un fondateur.
+10. Point ambigu ou touchant au § 17 du CDC technique : poser la question dans la pull request et s'arrêter, ne pas deviner.
+11. Migrations : créées par l'agent qui possède le ticket ; en cas de conflit de numérotation, celui qui fusionne en second régénère la sienne.
+12. Aucun secret, aucune donnée réelle de prospect, aucun `console.log` de données personnelles dans le dépôt.
+13. Messages de commit au format Conventional Commits, en français : `feat(stock): …`, `fix(fne): …`.
+
+Seule exception connue : la tâche `t-000-regles-git`, qui installe ces règles, vise `main` directement.
