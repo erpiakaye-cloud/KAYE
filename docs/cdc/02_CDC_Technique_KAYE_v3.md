@@ -1171,7 +1171,7 @@ Clés API FNE et business tokens WhatsApp : AES-256-GCM, clé de données dériv
 | Relecture croisée | l'autre agent | Chaque PR est relue par l'agent qui ne l'a pas écrite, puis validée par un humain |
 
 ### 14.2 Règles de collaboration
-1. Le backlog (`docs/cdc/03_Backlog_KAYE_v3.md`) est la seule liste de travail. Un ticket = une branche `t-<num>-<slug>` = une PR vers `dev`.
+1. Le backlog (`docs/cdc/03_Backlog_KAYE_v3.md`) est la seule liste de travail. Un ticket = une branche `claude/t-<num>-<slug>` (Claude Code) ou `codex/t-<num>-<slug>` (Codex), créée depuis `dev` à jour = une PR vers `dev`.
 2. Avant de coder : lire le ticket, les EF citées, les sections du présent document citées ; si un point est ambigu ou touche § 17, **ouvrir une question dans la PR et s'arrêter**.
 3. Deux agents ne travaillent jamais en même temps sur le même module ; les tickets marqués *socle* sont séquentiels.
 4. Toute migration est créée par l'agent qui possède le ticket ; conflit de numérotation de migration → l'agent qui fusionne en second régénère la sienne.
